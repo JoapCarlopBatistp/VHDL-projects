@@ -11,12 +11,12 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity half_adder_1b is
+entity half_adder_1b_tb is
 --  Port ( );
-end half_adder_1b;
+end half_adder_1b_tb;
 
-architecture Behavioral of half_adder_1b is
-component Half_Adder is
+architecture Behavioral of half_adder_1b_tb is
+component half_adder_1b is
     Port (A, B: in std_logic;
           Y,Carry: out std_logic );
 end component;
@@ -27,7 +27,7 @@ signal Y_tb, Carry_tb: std_logic;
 
 begin
 
-    dut: Half_Adder
+    dut: half_adder_1b
         port map(
         A => A_tb,
         B => B_tb,
