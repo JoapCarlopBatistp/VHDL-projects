@@ -16,7 +16,17 @@ end datapath_neander;
 
 architecture Behavioral of datapath_neander is
 --Memória BRAM-----------------------------------------------
+component memory
+port(
+    clka : IN STD_LOGIC;
+    wea : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    addra : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    dina : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    douta : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+);
+end component;
 signal outputMem: std_logic_vector(7 downto 0);
+signal writeMem: std_logic_vector(0 downto 0);
 --Sinais do acumulador---------------------------------------
 signal cargaACC: std_logic := '0';
 signal inputACC: std_logic_vector(7 downto 0);
@@ -62,7 +72,14 @@ signal comandos: std_logic_vector(11 downto 0);
 -------------------------------------------------------------
 begin
 --Memória BRAM-----------------------------------------------
-
+mem: memory
+port map(
+    clka => clk,
+    wea => writeMem,
+    addra => outputREM,
+    dina => outputACC,
+    douta => outputMem
+);
 --process do acumulador--------------------------------------
 process(clk, rst)
     begin
@@ -192,7 +209,7 @@ outputN <= registerN;
 decodificador <= outputRI(3 downto 0);
 process(decodificador)
     begin
-        comandos <= "0000000000000";
+        comandos <= "000000000000";
         case decodificador is
             when "0000" => comandos(0) <= '1';  --NOP
             when "0001" => comandos(1) <= '1';  --STA
